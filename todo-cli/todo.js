@@ -8,19 +8,19 @@ const todoList = () => {
     }
   
     const overdue = () => {
-      return all.filter((dt)=>dt.dueToday<today)
+      return all.filter((dt)=>dt.dueDate<today)
     }
   
     const dueToday = () => {
-      return all.filter((dt)=>dt.dueToday==today)
+      return all.filter((dt)=>dt.dueDate==today)
     }
   
     const dueLater = () => {
-      return all.filter((dt)=>dt.dueToday>today)
+      return all.filter((dt)=>dt.dueDate>today)
     }
   
     const toDisplayableList = (list) => {
-      return list.map((dt)=>`{dt.completed ? "[x]":"[ ]"} {dt.title} {dt.dueDate == today ? "":data.dueDate}`).join("\n")
+      return list.map((dt)=>`${dt.completed ? "[x]":"[ ]"} ${dt.title} ${dt.dueDate == today ? "":dt.dueDate}`).join("\n")
     }
   
     return {
