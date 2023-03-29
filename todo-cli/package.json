@@ -1,7 +1,7 @@
 {
   "name": "todo-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "My Todo-cli application",
   "main": "todo.js",
   "scripts": {
     "test": "jest",
