@@ -4,8 +4,8 @@ const todoList = require("../todo");
 const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 
 describe("todolist test suite", () => {
+  const today = new Date();
   beforeAll(() => {
-    const today = new Date();
     add({
       title: "Buying earphones",
       completed: false,
@@ -39,12 +39,34 @@ describe("todolist test suite", () => {
     expect(all[0].completed).toBe(true);
   });
   test("Checking overdue", () => {
-    expect(overdue().length).toBe(1);
+    const overDueTodoItemsCount = overdue().length;
+    add({
+      title: "for overdue",
+      completed: false,
+      dueDate: new Date(today.getTime() - 86400000).toISOString().slice(0, 10),
+    });
+    expect(overdue().length).toBe(overDueTodoItemsCount + 1);
   });
   test("Checking dueToday", () => {
-    expect(dueToday().length).toBe(2);
+    const dueTodayItemsCount = dueToday().length;
+    // console.log(dueTodayItemsCount)
+    add({
+      title: "for dueToday",
+      completed: false,
+      dueDate: new Date().toISOString().slice(0, 10),
+    });
+    // console.log(dueTodayItemsCount+1)
+    expect(dueToday().length).toBe(dueTodayItemsCount + 1);
   });
   test("checking dueLAter", () => {
-    expect(dueLater().length).toBe(1);
+    const dueLaterItemsCount = dueLater().length;
+    // console.log(dueLaterItemsCount)
+    add({
+      title: "for due later",
+      completed: false,
+      dueDate: new Date(today.getTime() + 86400000).toISOString().slice(0, 10),
+    });
+    // console.log(dueLaterItemsCount +  1)
+    expect(dueLater().length).toBe(dueLaterItemsCount + 1);
   });
 });
