@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "abcdef",
+    "database": "wd_todo_dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "abcdef",
+    "database": "wd_todo_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "abcdef",
+    "database": "wd_todo_prod",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
