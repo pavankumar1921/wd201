@@ -2,22 +2,22 @@
   "development": {
     "username": "postgres",
     "password": "abcdef",
-    "database": "wd_todo_dev",
+    "database": "wd-todo-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "abcdef",
-    "database": "wd_todo_test",
+    "database": "wd-todo-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "abcdef",
-    "database": "wd_todo_prod",
+    "username": "root",
+    "password": null,
+    "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   }
 }
