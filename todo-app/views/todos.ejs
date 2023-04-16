@@ -1,0 +1,24 @@
+<table>
+    <tr>
+        <th>
+            ID &nbsp;
+        </th>
+        <th>
+            Title &nbsp;
+        </th>&nbsp;
+        <th>
+            DueDate &nbsp;&nbsp;
+        </th>&nbsp;
+        <th>
+            Completed
+        </th>
+    </tr>
+    <% for(var i =0;i<allTodos.length;i++) {%>
+        <tr>
+            <td><%= allTodos[i].id %></td>&nbsp;
+            <td><%= allTodos[i].title %></td>&nbsp;
+            <td><%= allTodos[i].dueDate %></td>&nbsp;
+            <td><%= allTodos[i].completed %></td>&nbsp;
+        </tr>
+    <%} %>
+</table>
