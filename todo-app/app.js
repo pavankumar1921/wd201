@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require("express");
 const app = express();
 const { Todo } = require("./models");
@@ -12,12 +13,18 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", async (request, response) => {
   const allTodos = await Todo.getTodos();
+  const overdue = await Todo.overdue();
+  const dueLater = await Todo.dueLater();
+  const dueToday = await Todo.dueLater();
   if (request.accepts("html")) {
     response.render("index", {
       allTodos,
+      overdue,
+      dueLater,
+      dueToday,
     });
   } else {
-    response.json({ allTodos });
+    response.json({ allTodos, overdue, dueLater, dueToday });
   }
 });
 
@@ -39,8 +46,12 @@ app.get("/todos/:id", async function (request, response) {
 
 app.post("/todos", async function (request, response) {
   try {
-    const todo = await Todo.addTodo(request.body);
-    return response.json(todo);
+    const todo = await Todo.addTodo({
+      title: request.body.title,
+      dueDate: request.body.dueDate,
+      completed: false,
+    });
+    return response.redirect("/");
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
