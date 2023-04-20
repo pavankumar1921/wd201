@@ -46,9 +46,9 @@ app.get("/todos/:id", async function (request, response) {
 
 app.post("/todos", async function (request, response) {
   try {
-    const todo = await Todo.addTodo({
-      title: request.body.title,
-      dueDate: request.body.dueDate,
+    const todo = await Todo.create({
+      title: "buy a ice",
+      dueDate: new Date(),
       completed: false,
     });
     return response.redirect("/");
