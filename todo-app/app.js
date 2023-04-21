@@ -16,13 +16,15 @@ app.get("/", async (request, response) => {
   const allTodos = await Todo.getTodos();
   const overdue = await Todo.overdue();
   const dueLater = await Todo.dueLater();
-  const dueToday = await Todo.dueLater();
+  const dueToday = await Todo.dueToday();
+  const completedItems = await Todo.completedItems();
   if (request.accepts("html")) {
     response.render("index", {
       allTodos,
       overdue,
       dueLater,
       dueToday,
+      completedItems,
     });
   } else {
     response.json({ allTodos, overdue, dueLater, dueToday });
@@ -58,10 +60,10 @@ app.post("/todos", async function (request, response) {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
+app.put("/todos/:id", async (request, response) => {
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.markAsCompleted();
+    const updatedTodo = await todo.setCompletionStatus(request.body.completed);
     return response.json(updatedTodo);
   } catch (error) {
     console.log(error);
@@ -69,10 +71,14 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
   }
 });
 
-app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
-  const deletedTodo = await Todo.destroy({ where: { id: request.params.id } });
-  return response.send(deletedTodo ? true : false);
+app.delete("/todos/:id", async (request, response) => {
+  console.log("delete a Todo by ID: ", request.params.id);
+  try {
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
+  } catch (error) {
+    return response.status(422).json(error);
+  }
 });
 
 module.exports = app;
