@@ -21,20 +21,22 @@
             </table> -->
             <!-- <%- include("todos.ejs") %>
             <%-include("footer.ejs") %> -->
-            <form action="/">
+            <form action="/todos" method="post">
                 <div class="flex gap-2 py-4">
                     <div class="flex-auto">
-                        <input type="text" placeholder="What's next?" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm" required/>
+                        <input type="text" name="title" placeholder="What's next?" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm" required/>
                     </div>
                     <div class="flex-auto">
-                        <input type="date" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4"/>
+                        <input type="date" name="dueDate" class="border border-gray-300 rounded text-gray-900 w-full p-2 text-sm leading-4"/>
                     </div>
                     <div class="flex-none">
                         <button type="submit" class="bg-green-600 text-white px-5 py-1.5 rounded font-medium">Add</button>
                     </div>
                 </div>
             </form>
-            <%- include("todos.ejs") %>
+            <%- include("todo.ejs",{title:"Overdue",data:overdue}) %>
+            <%- include("todo.ejs",{title:"Due Today",data:dueToday}) %>
+            <%- include("todo.ejs",{title:"Due Later",data:dueLater}) %>
         </div>
     </div>
    

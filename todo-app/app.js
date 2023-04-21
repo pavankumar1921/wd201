@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
 const app = express();
-const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 const path = require("path");
-
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.set("view engine", "ejs");
 
 app.use(express.static(path.join(__dirname, "public")));
+
+const { Todo } = require("./models");
 
 app.get("/", async (request, response) => {
   const allTodos = await Todo.getTodos();
@@ -46,10 +47,9 @@ app.get("/todos/:id", async function (request, response) {
 
 app.post("/todos", async function (request, response) {
   try {
-    const todo = await Todo.create({
-      title: "buy a ice",
-      dueDate: new Date(),
-      completed: false,
+    await Todo.addTodo({
+      title: request.body.title,
+      dueDate: request.body.dueDate,
     });
     return response.redirect("/");
   } catch (error) {
