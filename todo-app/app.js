@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
-var csrf = require("csurf");
+var csrf = require("tiny-csrf");
 const app = express();
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
@@ -8,7 +8,7 @@ const path = require("path");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("some secret string"));
-app.use(csrf({ cookie: true }));
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELTE"]));
 
 app.set("view engine", "ejs");
 
