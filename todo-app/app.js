@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
+var csrf = require("csurf");
 const app = express();
 const bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
 const path = require("path");
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("some secret string"));
+app.use(csrf({ cookie: true }));
 
 app.set("view engine", "ejs");
 
@@ -25,9 +29,10 @@ app.get("/", async (request, response) => {
       dueLater,
       dueToday,
       completedItems,
+      csrfToken: request.csrfToken(),
     });
   } else {
-    response.json({ allTodos, overdue, dueLater, dueToday });
+    response.json({ overdue, dueLater, dueToday, completedItems });
   }
 });
 
