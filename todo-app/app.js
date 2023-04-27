@@ -14,7 +14,7 @@ app.set("view engine", "ejs");
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const { Todo } = require("./models");
+const { Todo, User } = require("./models");
 
 app.get("/", async (request, response) => {
   const allTodos = await Todo.getTodos();
@@ -33,6 +33,27 @@ app.get("/", async (request, response) => {
     });
   } else {
     response.json({ overdue, dueLater, dueToday, completedItems });
+  }
+});
+
+app.get("/signup", async (request, response) => {
+  response.render("signup", {
+    title: "Signup",
+    csrfToken: request.csrfToken(),
+  });
+});
+
+app.post("/users", async (request, response) => {
+  try {
+    const user = await User.create({
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      email: request.body.email,
+      password: request.body.password,
+    });
+    response.redirect("/");
+  } catch (error) {
+    console.log(error);
   }
 });
 
