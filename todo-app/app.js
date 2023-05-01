@@ -106,6 +106,8 @@ app.get(
     const dueLater = await Todo.dueLater(loggedInUser);
     const dueToday = await Todo.dueToday(loggedInUser);
     const completedItems = await Todo.completedItems(loggedInUser);
+    const user = await User.findByPk(loggedInUser);
+    const userName = user.dataValues.firstName;
     if (request.accepts("html")) {
       response.render("todos", {
         allTodos,
@@ -113,6 +115,7 @@ app.get(
         dueLater,
         dueToday,
         completedItems,
+        userName,
         title: "Todos",
         csrfToken: request.csrfToken(),
       });
