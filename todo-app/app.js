@@ -243,8 +243,8 @@ app.put(
     try {
       const updatedTodo = await todo.setCompletionStatus(
         request.body.completed,
-        userId,
-        request.params.id
+        request.params.id,
+        userId
       );
       return response.json(updatedTodo);
     } catch (error) {
