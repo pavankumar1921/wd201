@@ -146,6 +146,46 @@ describe("Todo Application", function () {
     expect(parsedUpdateResponse.completed).toBe(false);
   });
 
+  test("One user cannot mark as complete/incomplete a todo of other user", async () => {
+    let agent = request.agent(server);
+    await login(agent, "test@gmail.com", "12345678");
+    let res = await agent.get("/todos");
+    let csrfToken = extractCsrfToken(res);
+    res = await agent.post("/todos").send({
+      title: "doctor appointment",
+      dueDate: new Date().toISOString(),
+      _csrf: csrfToken,
+    });
+    const groupedTodoResponse = await agent
+      .get("/todos")
+      .set("Accept", "application/json");
+    const parsedGroupedResponse = JSON.parse(groupedTodoResponse.text);
+    const dueTodayCount = parsedGroupedResponse.dueToday.length;
+    const latestTodo = parsedGroupedResponse.dueToday[dueTodayCount - 1];
+    await agent.get("/signout");
+
+    res = await agent.get("/signup");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "User",
+      lastName: "B",
+      email: "userB@gmail.com",
+      password: "11122345",
+      _csrf: csrfToken,
+    });
+    await agent.get("/signout");
+    await login(agent, "userB@gmail.com", "11122345");
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+    const markCompleteResponse = await agent
+      .put(`/todos/${latestTodo.id}`)
+      .send({
+        _csrf: csrfToken,
+      });
+    console.log(markCompleteResponse.completed);
+    expect(markCompleteResponse.statusCode).toBe(422);
+  });
+
   test("Delete a todo", async () => {
     const agent = request.agent(server);
     await login(agent, "test@gmail.com", "12345678");
