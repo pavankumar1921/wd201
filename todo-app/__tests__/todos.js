@@ -184,7 +184,7 @@ describe("Todo Application", function () {
     res = await agent.get("/todos");
     csrfToken = extractCsrfToken(res);
 
-    console.log(Todo);
+    // console.log(Todo);
 
     const changeTodo = await agent
       .put(`/todos/${todoID}`)
@@ -193,7 +193,7 @@ describe("Todo Application", function () {
     const parseUpadteTodo = JSON.parse(changeTodo.text);
     console.log("Complete : " + parseUpadteTodo.completed);
     console.log("status : " + status);
-    expect(parseUpadteTodo.completed).toBe(status);
+    expect(parseUpadteTodo.completed).toBe(!status);
   });
 
   test("Delete a todo", async () => {

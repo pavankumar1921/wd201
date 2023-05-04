@@ -238,15 +238,16 @@ app.put(
   "/todos/:id",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    const todo = await Todo.findByPk(request.params.id);
-    const userId = request.user.id;
+    // const todo = await Todo.findByPk(request.params.id);
+    // const userId = request.user.id;
     try {
-      const updatedTodo = await todo.setCompletionStatus(
+      const updatedTodo = await Todo.setCompletionStatus(
         request.body.completed,
         request.params.id,
-        userId
+        request.user.id
       );
-      return response.json(updatedTodo);
+      const todo = await Todo.findByPk(request.params.id);
+      return response.json(todo);
     } catch (error) {
       console.log(error);
       return response.status(422).json(error);

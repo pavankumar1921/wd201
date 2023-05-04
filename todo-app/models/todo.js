@@ -84,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     markAsCompleted() {
       return this.update({ completed: true });
     }
-    setCompletionStatus(bool, id, userId) {
+    static setCompletionStatus(bool, id, userId) {
       return this.update(
         { completed: bool },
         {
