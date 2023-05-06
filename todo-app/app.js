@@ -88,11 +88,14 @@ passport.deserializeUser((id, done) => {
 const { Todo, User } = require("./models");
 
 app.get("/", async (request, response) => {
-  console.log(request.user);
-  response.render("index", {
-    title: "Todo-application",
-    csrfToken: request.csrfToken(),
-  });
+  if (request.user) {
+    return response.redirect("/todos");
+  } else {
+    response.render("index", {
+      title: "Todo-application",
+      csrfToken: request.csrfToken(),
+    });
+  }
 });
 
 app.get(
